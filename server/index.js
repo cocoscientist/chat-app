@@ -12,12 +12,12 @@ io.on('connection',(socket)=>{
         users[socket.id] = userName
     })
     socket.on('message',content=>{
-        io.emit('message', `${users[socket.id]}(${socket.id}) said ${content}`)
+        io.emit('message', `${users[socket.id]}(${socket.id.substr(0,4)}) said ${content}`)
     })
     socket.on('disconnect',()=>{
         let userName = users[socket.id]
         delete users[socket.id]
-        io.emit('exit', `${userName}(${socket.id}) disconnected`)
+        io.emit('exit', `${userName}(${socket.id.substr(0,4)}) disconnected`)
     })
 })
 
