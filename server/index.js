@@ -14,6 +14,11 @@ io.on('connection',(socket)=>{
     socket.on('message',content=>{
         io.emit('message', `${users[socket.id]}(${socket.id}) said ${content}`)
     })
+    socket.on('disconnect',()=>{
+        let userName = users[socket.id]
+        delete users[socket.id]
+        io.emit('exit', `${userName}(${socket.id}) disconnected`)
+    })
 })
 
 http.listen(8080,()=>console.log('App started'))
