@@ -10,7 +10,7 @@ io.on('connection',(socket)=>{
     socket.emit('userConnect','A new user has arrived')
     socket.on('addUser',userName=>{
         users[socket.id] = userName
-        io.emit('userFinalConnect', `${users[socket.id]}(${socket.id.substr(0,4)})`)
+        io.emit('userFinalConnect',Object.keys(users).length)
     })
     socket.on('message',content=>{
         io.emit('message', `${users[socket.id]}(${socket.id.substr(0,4)}) said ${content}`)
@@ -18,7 +18,7 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         let userName = users[socket.id]
         delete users[socket.id]
-        io.emit('exit', `${userName}(${socket.id.substr(0,4)}) disconnected`)
+        io.emit('exit', {message:`${userName}(${socket.id.substr(0,4)}) disconnected`,count:Object.keys(users).length})
     })
 })
 
