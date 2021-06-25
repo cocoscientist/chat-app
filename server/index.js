@@ -10,6 +10,7 @@ io.on('connection',(socket)=>{
     socket.emit('userConnect','A new user has arrived')
     socket.on('addUser',userName=>{
         users[socket.id] = userName
+        io.emit('userFinalConnect', `${users[socket.id]}(${socket.id.substr(0,4)})`)
     })
     socket.on('message',content=>{
         io.emit('message', `${users[socket.id]}(${socket.id.substr(0,4)}) said ${content}`)
