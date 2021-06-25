@@ -1,19 +1,23 @@
 const socket = io('ws://localhost:8080')
-socket.on('userConnect',receiveData=>{
+
+function makeListItem(innText,idOfList){
     const listElem = document.createElement('li')
-    listElem.innerText = receiveData
-    document.querySelector('ul').appendChild(listElem)
+    listElem.innerText = innText
+    document.getElementById(idOfList).appendChild(listElem)
+}
+
+socket.on('userConnect',receiveData=>{
+    makeListItem(receiveData,'usersStore')
     socket.emit('addUser',prompt("Enter your name:"))
 })
+socket.on('userFinalConnect',receiveData=>{
+    makeListItem(receiveData,'usersStore')
+})
 socket.on('message',text=>{
-    const listElem = document.createElement('li');
-    listElem.innerText = text
-    document.getElementById('mainChat').appendChild(listElem)
+    makeListItem(text,'mainChat')
 })
 socket.on('exit',exitMsg=>{
-    const listElem = document.createElement('li');
-    listElem.innerText = exitMsg
-    document.getElementById('mainChat').appendChild(listElem)
+    makeListItem(exitMsg,'mainChat')
 })
 
 document.querySelector('button').onclick = () =>{
