@@ -6,18 +6,23 @@ function makeListItem(innText,idOfList){
     document.getElementById(idOfList).appendChild(listElem)
 }
 
+function changeCount(num,idOfList){
+    document.getElementById(idOfList).innerText = num
+}
+
 socket.on('userConnect',receiveData=>{
-    makeListItem(receiveData,'usersStore')
+    makeListItem(receiveData,'mainChat')
     socket.emit('addUser',prompt("Enter your name:"))
 })
-socket.on('userFinalConnect',receiveData=>{
-    makeListItem(receiveData,'usersStore')
+socket.on('userFinalConnect',userSize=>{
+    changeCount(userSize,'numUsers')
 })
 socket.on('message',text=>{
     makeListItem(text,'mainChat')
 })
 socket.on('exit',exitMsg=>{
-    makeListItem(exitMsg,'mainChat')
+    makeListItem(exitMsg.message,'mainChat')
+    changeCount(exitMsg.count,'numUsers')
 })
 
 document.querySelector('button').onclick = () =>{
